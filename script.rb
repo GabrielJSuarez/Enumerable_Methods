@@ -48,4 +48,13 @@ module Enumerable
           array.length - index
         end
     end
+    
+    def my_map_block(array)
+        new_arr = []
+        my_each(array) do |x|
+            new_arr.push(yield(x))
+        end
+        p new_arr
+    end
+    
 end
