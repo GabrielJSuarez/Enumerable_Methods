@@ -57,4 +57,11 @@ module Enumerable
         p new_arr
     end
     
+    def my_map_proc(array, &block)
+        new_arr = []
+        my_each(array) do |x|
+          new_arr.push(block.call(x))
+        end
+        p new_arr
+    end
 end
