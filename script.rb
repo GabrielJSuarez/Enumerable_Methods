@@ -64,4 +64,20 @@ module Enumerable
         end
         p new_arr
     end
+    
+    def my_inject(array, acc = 0)
+        if my_all?(array) { |x| x.class == String }
+            count = ""
+        elsif my_all?(array) { |x| x.class == Integer }
+             count = acc
+        else
+            return p 'no implicit conversion of Integer into String (TypeError)'
+        end
+
+        my_each(array) do |x|
+            count = yield(count, x)
+        end
+        p count
+    end
+    
 end
