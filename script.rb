@@ -38,4 +38,14 @@ module Enumerable
         p my_select(array) { |x| yield(x) }.length.length.zero? ? true : false
     end
     
+    def my_count(array, idx = 0)
+        index = idx
+    
+        if block_given? == true
+          my_select(array) { |x| yield(x) }.length
+    
+        else
+          array.length - index
+        end
+    end
 end
