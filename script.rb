@@ -18,4 +18,11 @@ module Enumerable
       array
     end
 
+    def my_select(array)
+        new_arr = []
+        my_each(array) do |x|
+          new_arr.push(x) if yield(x) == true
+        end
+        new_arr
+    end
 end
