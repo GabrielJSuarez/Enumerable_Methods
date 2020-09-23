@@ -34,4 +34,8 @@ module Enumerable
         p my_select(array) { |x| yield(x) }.length.positive? ? true : false
     end
     
+    def my_none?(array)
+        p my_select(array) { |x| yield(x) }.length.length.zero? ? true : false
+    end
+    
 end
