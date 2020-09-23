@@ -25,4 +25,8 @@ module Enumerable
         end
         new_arr
     end
+    
+    def my_all?(array)
+        p my_select(array) { |x| yield(x) }.length == array.length ? true : false
+    end
 end
