@@ -29,4 +29,9 @@ module Enumerable
     def my_all?(array)
         p my_select(array) { |x| yield(x) }.length == array.length ? true : false
     end
+
+    def my_any?(array)
+        p my_select(array) { |x| yield(x) }.length.positive? ? true : false
+    end
+    
 end
