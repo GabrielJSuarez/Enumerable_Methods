@@ -1,11 +1,13 @@
 module Enumerable
-  def my_each(array)
+  def my_each
+    var = self.to_a
+    return to_enum(:my_each) unless block_given?
     index = 0
-    while index < array.length
-      yield(array[index])
+    while index < var.length
+      yield(var[index])
       index += 1
     end
-    array
+    var
   end
 
   def my_each_with_index(array)
@@ -80,4 +82,8 @@ module Enumerable
   end
 end
 
-#test
+
+
+
+
+
