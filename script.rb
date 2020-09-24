@@ -85,14 +85,13 @@ module Enumerable
     end
   end
 
-  def my_count(array, idx = 0)
-    index = idx
-
-    if block_given? == true
-      my_select(array) { |x| yield(x) }.length
-
-    else
-      array.length - index
+  def my_count(arg = nil)
+    var = self.to_a
+    if arg == nil
+      return var.length unless block_given?
+      var.my_select { |x| yield(x) }.length
+    else 
+      var.my_select { |x| x == arg }.length
     end
   end
 
@@ -128,3 +127,4 @@ module Enumerable
   end
 end
 
+p [5, 4, 1, 5].my_count { |x| x > 2 }
