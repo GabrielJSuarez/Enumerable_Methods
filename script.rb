@@ -1,4 +1,4 @@
-# rubocop:disable Style/LineLength, Style/StringLiterals
+# rubocop:disable all
 
 # frozen_string_literal: true
 
@@ -170,5 +170,3 @@ end
 def multiply_els(arr)
   arr.my_inject(1, :*)
 end
-
-# rubocop:enable Style/LineLength, Style/StringLiterals
