@@ -111,20 +111,35 @@ module Enumerable
     new_arr
   end
 
-  def my_inject(array, acc = 0)
-    if my_all?(array) { |x| x.class == String }
+  def my_inject(initial = nil, sym = nil)
+    var = self.to_a
+    count = initial
+
+    if var.my_all? { |x| x.class == String }
       count = ''
-    elsif my_all?(array) { |x| x.class == Integer }
-      count = acc
+    elsif var.my_all? { |x| x.class == Integer }
+      count = initial
     else
-      return p 'no implicit conversion of Integer into String (TypeError)'
+      'no implicit conversion'
     end
 
-    my_each(array) do |x|
-      count = yield(count, x)
+    if initial != nil && sym != nil
+      var.my_each do |x|
+         count 
+      end
+      count
+    elsif initial == nil && sym != nil
+
+    elsif initial != nil && sym == nil
+    
+    else
+
     end
-    p count
+
+    
   end
 end
+
+
 
 
