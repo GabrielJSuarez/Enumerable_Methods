@@ -111,34 +111,57 @@ module Enumerable
     new_arr
   end
 
-  def my_inject(initial = nil, sym = nil)
+  def my_inject(acc = nil, sym = nil)
     var = self.to_a
-    count = initial
 
     if var.my_all? { |x| x.class == String }
-      count = ''
-    elsif var.my_all? { |x| x.class == Integer }
-      count = initial
+      count = ''  
     else
-      'no implicit conversion'
+      count = acc
     end
 
-    if initial != nil && sym != nil
+    if acc != nil && sym != nil
+      operation = sym
       var.my_each do |x|
-         count 
+        count = count.send operation, x   
       end
       count
-    elsif initial == nil && sym != nil
-
-    elsif initial != nil && sym == nil
-    
+    elsif acc != nil && acc.class != Integer
+      count = 0
+      operation = acc
+      var.my_each do |x|
+        count = count.send operation, x   
+      end
+      count
+    elsif acc.class == Integer
+      return "LocalJumpError (no block given)" unless block_given?
+      var.my_each do |x|
+        count = yield(count, x)
+      end
+      count
     else
-
+      if count.class != String
+        return "LocalJumpError (no block given)" unless block_given?
+          count = 0
+          var.my_each do |x|
+            count = yield(count, x)
+          end
+        count
+      else
+        return "LocalJumpError (no block given)" unless block_given?
+          var.my_each do |x|
+            count = yield(count, x)
+          end
+        count
+      end  
     end
-
-    
   end
+
+
 end
+
+
+p (1..5).my_inject(4) { |prod, n| prod * n }
 
 
 
