@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# frozen_string_literal: true
+
 module Enumerable
   def my_each
     var = to_a
@@ -61,7 +63,7 @@ module Enumerable
       if pattern.class == Regexp
         var.my_select { |x| !pattern.match(x).nil? }.length.positive? ? true : false
       elsif pattern.class == Integer
-        var.my_select { |x| x == pattern}.length.positive? ? true : false
+        var.my_select { |x| x == pattern }.length.positive? ? true : false
       else
         var.my_select { |x| x.class == pattern}.length.positive? ? true : false
       end
@@ -168,3 +170,5 @@ end
 def multiply_els(arr)
   arr.my_inject(1, :*)
 end
+
+# rubocop:enable Style/LineLength, Style/StringLiterals
