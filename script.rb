@@ -95,21 +95,32 @@ module Enumerable
     end
   end
 
-  def my_map_block(array)
+  def my_map
+    var = self.to_a
+    return to_enum(:my_map) unless block_given?
     new_arr = []
-    my_each(array) do |x|
+    var.my_each do |x|
       new_arr.push(yield(x))
     end
-    p new_arr
+    new_arr
   end
 
-  def my_map_proc(array, &block)
-    new_arr = []
-    my_each(array) do |x|
-      new_arr.push(block.call(x))
-    end
-    p new_arr
-  end
+
+  # def my_map_block(array)
+  #   new_arr = []
+  #   my_each(array) do |x|
+  #     new_arr.push(yield(x))
+  #   end
+  #   p new_arr
+  # end
+
+  # def my_map_proc(array, &block)
+  #   new_arr = []
+  #   my_each(array) do |x|
+  #     new_arr.push(block.call(x))
+  #   end
+  #   p new_arr
+  # end
 
   def my_inject(array, acc = 0)
     if my_all?(array) { |x| x.class == String }
@@ -126,5 +137,3 @@ module Enumerable
     p count
   end
 end
-
-p [5, 4, 1, 5].my_count { |x| x > 2 }
