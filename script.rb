@@ -68,8 +68,21 @@ module Enumerable
     end
   end
 
-  def my_none?(array)
-    p my_select(array) { |x| yield(x) }.length.length.zero? ? true : false
+  def my_none?(pattern = nil)
+    var = self.to_a
+    if block_given? == true
+      var.my_select { |x| yield(x) }.length.zero? ? true : false
+    elsif pattern != nil
+      if pattern.class == Regexp
+        var.my_select { |x| pattern.match(x) != nil }.length.zero? ? true : false
+      elsif pattern.class == Integer
+        var.my_select { |x| x == pattern}.length.zero? ? true : false
+      else
+        var.my_select { |x| x.class == pattern}.length.zero? ? true : false
+      end
+    else
+      var.my_select { |x| x != nil && x != false }.length.zero? ? true : false
+    end
   end
 
   def my_count(array, idx = 0)
@@ -114,3 +127,4 @@ module Enumerable
     p count
   end
 end
+
