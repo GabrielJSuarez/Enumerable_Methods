@@ -95,32 +95,21 @@ module Enumerable
     end
   end
 
-  def my_map
+  def my_map( proc = nil)
     var = self.to_a
-    return to_enum(:my_map) unless block_given?
     new_arr = []
-    var.my_each do |x|
-      new_arr.push(yield(x))
+    if proc != nil
+      var.my_each do |x|
+        new_arr.push(proc.call(x))
+      end
+    else
+      return to_enum(:my_map) unless block_given?
+      var.my_each do |x|
+        new_arr.push(yield(x))
+      end
     end
     new_arr
   end
-
-
-  # def my_map_block(array)
-  #   new_arr = []
-  #   my_each(array) do |x|
-  #     new_arr.push(yield(x))
-  #   end
-  #   p new_arr
-  # end
-
-  # def my_map_proc(array, &block)
-  #   new_arr = []
-  #   my_each(array) do |x|
-  #     new_arr.push(block.call(x))
-  #   end
-  #   p new_arr
-  # end
 
   def my_inject(array, acc = 0)
     if my_all?(array) { |x| x.class == String }
@@ -137,3 +126,5 @@ module Enumerable
     p count
   end
 end
+
+
