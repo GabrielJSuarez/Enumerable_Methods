@@ -34,8 +34,19 @@ module Enumerable
     new_arr
   end
 
-  def my_all?(array)
-    p my_select(array) { |x| yield(x) }.length == array.length
+  def my_all?(pattern = nil)
+    var = self.to_a
+    if block_given? == true
+      var.my_select { |x| yield(x) }.length == var.length ? true : false
+    elsif pattern != nil
+      if pattern.class == Regexp
+        var.my_select { |x| pattern.match(x) != nil }.length == var.length ? true : false
+      else
+        var.my_select { |x| x.class == pattern}.length == var.length ? true : false
+      end
+    else
+      var.my_select { |x| x != nil && x != false }.length == var.length ? true : false
+    end
   end
 
   def my_any?(array)
@@ -89,4 +100,7 @@ module Enumerable
   end
 end
 
-p (1..5).my_select #{ |x| x > 3 }
+
+
+
+
