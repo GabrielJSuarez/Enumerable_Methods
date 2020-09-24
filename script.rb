@@ -2,6 +2,7 @@ module Enumerable
   def my_each
     var = self.to_a
     return to_enum(:my_each) unless block_given?
+
     index = 0
     while index < var.length
       yield(var[index])
@@ -13,6 +14,7 @@ module Enumerable
   def my_each_with_index
     var = self.to_a
     return to_enum(:my_each) unless block_given?
+
     index = 0
     while index < var.length
       yield(var[index], index)
@@ -21,9 +23,12 @@ module Enumerable
     var
   end
 
-  def my_select(array)
+  def my_select
+    var = self.to_a
     new_arr = []
-    my_each(array) do |x|
+    return to_enum(:my_select) unless block_given?
+
+    var.my_each do |x|
       new_arr.push(x) if yield(x) == true
     end
     new_arr
@@ -83,3 +88,5 @@ module Enumerable
     p count
   end
 end
+
+p (1..5).my_select #{ |x| x > 3 }
