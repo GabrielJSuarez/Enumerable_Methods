@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# rubocop:disable Style/LineLength, Style/StringLiterals
 
 # frozen_string_literal: true
 
