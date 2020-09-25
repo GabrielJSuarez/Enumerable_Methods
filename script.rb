@@ -125,27 +125,32 @@ module Enumerable
               acc
             end
 
-    if !acc.nil? && !sym.nil?
-      operation = sym
+    if args.length == 2
+      count = args[0]
+      operation = args[1]
       var.my_each do |x|
         count = count.send operation, x
       end
       count
-    elsif !acc.nil? && acc.class != Integer
-      count = 0
-      operation = acc
+    elsif args.length == 1 && args[0].kind_of? Symbol
+      if args[0] == :+ || :-
+        count = 0
+      else 
+        count = 1
+      end
+      operation = args[0]
       var.my_each do |x|
         count = count.send operation, x
       end
       count
-    elsif acc.class == Integer
+    elsif args.length == 1 && args[0].kind_of? Integer
       raise LocalJumpError.new("no block given") unless block_given?
       var.my_each do |x|
         count = yield(count, x)
       end
       count
     else
-      if count.class != String
+      if !count.kind_of? String
         raise LocalJumpError.new("no block given") unless block_given?
         count = 0
         var.my_each do |x|
@@ -171,7 +176,8 @@ arr = [1, 1, 1, 3, 1]
 
 range = (1..5)
 
-
-
+actual = range.my_inject { |prod, n| prod * n }
+expected = range.inject { |prod, n| prod * n }
+p actual == expected
 
 
