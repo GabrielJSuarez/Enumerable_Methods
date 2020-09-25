@@ -122,7 +122,7 @@ module Enumerable
     count = if var.my_all? { |x| x.class == String }
               ''
             else
-              acc
+              args
             end
 
     if args.length == 2
@@ -132,10 +132,9 @@ module Enumerable
         count = count.send operation, x
       end
       count
-    elsif args.length == 1 && args[0].kind_of? Symbol
-      if args[0] == :+ || :-
-        count = 0
-      else 
+    elsif args.length == 1 && args[0].class == Symbol
+      count = 0
+      if args[0] == (:*) || args[0] == (:/)
         count = 1
       end
       operation = args[0]
@@ -143,8 +142,9 @@ module Enumerable
         count = count.send operation, x
       end
       count
-    elsif args.length == 1 && args[0].kind_of? Integer
+    elsif args.length == 1 && args[0].class == Integer
       raise LocalJumpError.new("no block given") unless block_given?
+      count = args[0]
       var.my_each do |x|
         count = yield(count, x)
       end
@@ -152,9 +152,10 @@ module Enumerable
     else
       if !count.kind_of? String
         raise LocalJumpError.new("no block given") unless block_given?
-        count = 0
-        var.my_each do |x|
-          count = yield(count, x)
+        count = var[0]
+        var.shift
+        var.my_each do |el|
+          count = yield(count, el)
         end
         count
       else
@@ -172,12 +173,7 @@ def multiply_els(arr)
   arr.my_inject(1, :*)
 end
 
-arr = [1, 1, 1, 3, 1]
-
-range = (1..5)
-
-actual = range.my_inject { |prod, n| prod * n }
-expected = range.inject { |prod, n| prod * n }
-p actual == expected
-
-
+longest = %w{ cat sheep bear }.inject do |memo, word|
+  memo.length > word.length ? memo : word
+end
+p longest   
