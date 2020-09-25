@@ -173,5 +173,3 @@ end
 def multiply_els(arr)
   arr.my_inject(1, :*)
 end
-
-p  Integer === 1
