@@ -173,7 +173,4 @@ def multiply_els(arr)
   arr.my_inject(1, :*)
 end
 
-longest = %w{ cat sheep bear }.inject do |memo, word|
-  memo.length > word.length ? memo : word
-end
-p longest   
+ 
