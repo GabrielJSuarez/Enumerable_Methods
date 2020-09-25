@@ -4,7 +4,7 @@
 
 module Enumerable
   def my_each
-    var = to_a
+    var = self.to_a
     return to_enum(:my_each) unless block_given?
 
     index = 0
@@ -16,7 +16,7 @@ module Enumerable
   end
 
   def my_each_with_index
-    var = to_a
+    var = self.to_a
     return to_enum(:my_each) unless block_given?
 
     index = 0
@@ -28,7 +28,7 @@ module Enumerable
   end
 
   def my_select
-    var = to_a
+    var = self.to_a
     new_arr = []
     return to_enum(:my_select) unless block_given?
 
@@ -39,7 +39,7 @@ module Enumerable
   end
 
   def my_all?(pattern = nil)
-    var = to_a
+    var = self.to_a
     if block_given? == true
       var.my_select { |x| yield(x) }.length == var.length
     elsif !pattern.nil?
@@ -56,7 +56,7 @@ module Enumerable
   end
 
   def my_any?(pattern = nil)
-    var = to_a
+    var = self.to_a
     if block_given? == true
       var.my_select { |x| yield(x) }.length.positive? ? true : false
     elsif !pattern.nil?
@@ -73,7 +73,7 @@ module Enumerable
   end
 
   def my_none?(pattern = nil)
-    var = to_a
+    var = self.to_a
     if block_given? == true
       var.my_select { |x| yield(x) }.length.zero? ? true : false
     elsif !pattern.nil?
@@ -90,7 +90,7 @@ module Enumerable
   end
 
   def my_count(arg = nil)
-    var = to_a
+    var = self.to_a
     if arg.nil?
       return var.length unless block_given?
 
@@ -101,7 +101,7 @@ module Enumerable
   end
 
   def my_map(proc = nil)
-    var = to_a
+    var = self.to_a
     new_arr = []
     if !proc.nil?
       var.my_each do |x|
@@ -118,7 +118,7 @@ module Enumerable
   end
 
   def my_inject(acc = nil, sym = nil)
-    var = to_a
+    var = self.to_a
 
     count = if var.my_all? { |x| x.class == String }
               ''
@@ -140,29 +140,26 @@ module Enumerable
       end
       count
     elsif acc.class == Integer
-      return 'LocalJumpError (no block given)' unless block_given?
-
+      raise LocalJumpError.new("no block given") unless block_given?
       var.my_each do |x|
         count = yield(count, x)
       end
       count
     else
       if count.class != String
-        return 'LocalJumpError (no block given)' unless block_given?
-
-        count = 0
-        var.my_each do |x|
-          count = yield(count, x)
-        end
-        count
-      else
-        return 'LocalJumpError (no block given)' unless block_given?
-
-        var.my_each do |x|
-          count = yield(count, x)
-        end
-        count
+      raise LocalJumpError.new("no block given") unless block_given?
+      count = 0
+      var.my_each do |x|
+        count = yield(count, x)
       end
+      count
+    else
+      raise LocalJumpError.new("no block given") unless block_given?
+      var.my_each do |x|
+        count = yield(count, x)
+      end
+      count
+    end
     end
   end
 end
@@ -170,3 +167,17 @@ end
 def multiply_els(arr)
   arr.my_inject(1, :*)
 end
+
+arr = [1, 2, 3, 4, 5]
+
+range = (1..5)
+
+block = Proc.new {|x| x + 2}
+
+p [1,2,3].my_inject(:*)
+
+
+
+
+
+
