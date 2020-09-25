@@ -4,7 +4,7 @@
 
 module Enumerable
   def my_each
-    var = self.to_a
+    var = to_a
     return to_enum(:my_each) unless block_given?
 
     index = 0
@@ -16,7 +16,7 @@ module Enumerable
   end
 
   def my_each_with_index
-    var = self.to_a
+    var = to_a
     return to_enum(:my_each) unless block_given?
 
     index = 0
@@ -28,7 +28,7 @@ module Enumerable
   end
 
   def my_select
-    var = self.to_a
+    var = to_a
     new_arr = []
     return to_enum(:my_select) unless block_given?
 
@@ -39,7 +39,7 @@ module Enumerable
   end
 
   def my_all?(pattern = nil)
-    var = self.to_a
+    var = to_a
     if block_given? == true
       var.my_select { |x| yield(x) }.length == var.length
     elsif !pattern.nil?
@@ -56,7 +56,7 @@ module Enumerable
   end
 
   def my_any?(pattern = nil)
-    var = self.to_a
+    var = to_a
     if block_given? == true
       var.my_select { |x| yield(x) }.length.positive? ? true : false
     elsif !pattern.nil?
@@ -73,7 +73,7 @@ module Enumerable
   end
 
   def my_none?(pattern = nil)
-    var = self.to_a
+    var = to_a
     if block_given? == true
       var.my_select { |x| yield(x) }.length.zero? ? true : false
     elsif !pattern.nil?
@@ -90,7 +90,7 @@ module Enumerable
   end
 
   def my_count(arg = nil)
-    var = self.to_a
+    var = to_a
     if arg.nil?
       return var.length unless block_given?
 
@@ -101,7 +101,7 @@ module Enumerable
   end
 
   def my_map(proc = nil)
-    var = self.to_a
+    var = to_a
     new_arr = []
     if !proc.nil?
       var.my_each do |x|
@@ -118,7 +118,7 @@ module Enumerable
   end
 
   def my_inject(acc = nil, sym = nil)
-    var = self.to_a
+    var = to_a
 
     count = if var.my_all? { |x| x.class == String }
               ''
@@ -172,9 +172,9 @@ arr = [1, 2, 3, 4, 5]
 
 range = (1..5)
 
-block = Proc.new {|x| x + 2}
+block = Proc.new {|x| puts x + 2}
 
-p [1,2,3].my_inject(:*)
+range.my_each(&block)
 
 
 
