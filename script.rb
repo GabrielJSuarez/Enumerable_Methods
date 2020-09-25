@@ -4,15 +4,14 @@
 
 module Enumerable
   def my_each
-    var = to_a
+    var = to_a 
     return to_enum(:my_each) unless block_given?
-
     index = 0
     while index < var.length
       yield(var[index])
       index += 1
     end
-    var
+    self
   end
 
   def my_each_with_index
@@ -24,7 +23,7 @@ module Enumerable
       yield(var[index], index)
       index += 1
     end
-    var
+    self
   end
 
   def my_select
@@ -43,12 +42,12 @@ module Enumerable
     if block_given? == true
       var.my_select { |x| yield(x) }.length == var.length
     elsif !pattern.nil?
-      if pattern.class == Regexp
+      if pattern.kind_of? Regexp
         var.my_select { |x| !pattern.match(x).nil? }.length == var.length
-      elsif pattern.class == Integer
-        var.my_select { |x| x == pattern }.length == var.length
+      elsif pattern.kind_of? Numeric
+        var.my_select { |x| x.kind_of? pattern }.length == var.length
       else
-        var.my_select { |x| x.class == pattern }.length == var.length
+        var.my_select { |x| x.kind_of? pattern }.length == var.length
       end
     else
       var.my_select { |x| !x.nil? && x != false }.length == var.length
@@ -60,12 +59,12 @@ module Enumerable
     if block_given? == true
       var.my_select { |x| yield(x) }.length.positive? ? true : false
     elsif !pattern.nil?
-      if pattern.class == Regexp
+      if pattern.kind_of? Regexp
         var.my_select { |x| !pattern.match(x).nil? }.length.positive? ? true : false
-      elsif pattern.class == Integer
-        var.my_select { |x| x == pattern }.length.positive? ? true : false
+      elsif pattern.kind_of? Numeric
+        var.my_select { |x| x.kind_of? pattern }.length.positive? ? true : false
       else
-        var.my_select { |x| x.class == pattern}.length.positive? ? true : false
+        var.my_select { |x| x.kind_of? pattern }.length.positive? ? true : false
       end
     else
       var.my_select { |x| !x.nil? && x != false }.length.positive? ? true : false
@@ -117,7 +116,7 @@ module Enumerable
     new_arr
   end
 
-  def my_inject(acc = nil, sym = nil)
+  def my_inject(*args)
     var = to_a
 
     count = if var.my_all? { |x| x.class == String }
@@ -147,19 +146,19 @@ module Enumerable
       count
     else
       if count.class != String
-      raise LocalJumpError.new("no block given") unless block_given?
-      count = 0
-      var.my_each do |x|
-        count = yield(count, x)
+        raise LocalJumpError.new("no block given") unless block_given?
+        count = 0
+        var.my_each do |x|
+          count = yield(count, x)
+        end
+        count
+      else
+        raise LocalJumpError.new("no block given") unless block_given?
+        var.my_each do |x|
+          count = yield(count, x)
+        end
+        count
       end
-      count
-    else
-      raise LocalJumpError.new("no block given") unless block_given?
-      var.my_each do |x|
-        count = yield(count, x)
-      end
-      count
-    end
     end
   end
 end
@@ -168,14 +167,9 @@ def multiply_els(arr)
   arr.my_inject(1, :*)
 end
 
-arr = [1, 2, 3, 4, 5]
+arr = [1, 1, 1, 3, 1]
 
 range = (1..5)
-
-block = Proc.new {|x| puts x + 2}
-
-range.my_each(&block)
-
 
 
 
