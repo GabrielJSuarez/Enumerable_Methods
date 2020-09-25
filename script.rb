@@ -45,9 +45,9 @@ module Enumerable
       if pattern.kind_of? Regexp
         var.my_select { |x| !pattern.match(x).nil? }.length == var.length
       elsif pattern.kind_of? Numeric
-        var.my_select { |x| x === pattern }.length == var.length
+        var.my_select { |x| pattern === x }.length == var.length
       else
-        var.my_select { |x| x === pattern }.length == var.length
+        var.my_select { |x| pattern === x }.length == var.length
       end
     else
       var.my_select { |x| !x.nil? && x != false }.length == var.length
@@ -62,9 +62,9 @@ module Enumerable
       if pattern.kind_of? Regexp
         var.my_select { |x| !pattern.match(x).nil? }.length.positive? ? true : false
       elsif pattern.kind_of? Numeric
-        var.my_select { |x| x.kind_of? pattern }.length.positive? ? true : false
+        var.my_select { ||x| pattern === x }.length.positive? ? true : false
       else
-        var.my_select { |x| x.kind_of? pattern }.length.positive? ? true : false
+        var.my_select { |x| pattern === x }.length.positive? ? true : false
       end
     else
       var.my_select { |x| !x.nil? && x != false }.length.positive? ? true : false
@@ -173,5 +173,3 @@ end
 def multiply_els(arr)
   arr.my_inject(1, :*)
 end
-
-
