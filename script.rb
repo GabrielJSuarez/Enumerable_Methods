@@ -39,15 +39,15 @@ module Enumerable
 
   def my_all?(pattern = nil)
     var = to_a
-    if block_given? == true
+    if block_given?
       var.my_select { |x| yield(x) }.length == var.length
     elsif !pattern.nil?
       if pattern.kind_of? Regexp
         var.my_select { |x| !pattern.match(x).nil? }.length == var.length
       elsif pattern.kind_of? Numeric
-        var.my_select { |x| x.kind_of? pattern }.length == var.length
+        var.my_select { |x| x === pattern }.length == var.length
       else
-        var.my_select { |x| x.kind_of? pattern }.length == var.length
+        var.my_select { |x| x === pattern }.length == var.length
       end
     else
       var.my_select { |x| !x.nil? && x != false }.length == var.length
@@ -56,7 +56,7 @@ module Enumerable
 
   def my_any?(pattern = nil)
     var = to_a
-    if block_given? == true
+    if block_given?
       var.my_select { |x| yield(x) }.length.positive? ? true : false
     elsif !pattern.nil?
       if pattern.kind_of? Regexp
@@ -73,7 +73,7 @@ module Enumerable
 
   def my_none?(pattern = nil)
     var = to_a
-    if block_given? == true
+    if block_given?
       var.my_select { |x| yield(x) }.length.zero? ? true : false
     elsif !pattern.nil?
       if pattern.class == Regexp
@@ -153,8 +153,9 @@ module Enumerable
       if !count.kind_of? String
         raise LocalJumpError.new("no block given") unless block_given?
         count = var[0]
-        var.shift
-        var.my_each do |el|
+        varMod = var.dup
+        varMod.shift
+        varMod.my_each do |el|
           count = yield(count, el)
         end
         count
@@ -173,4 +174,4 @@ def multiply_els(arr)
   arr.my_inject(1, :*)
 end
 
- 
+
